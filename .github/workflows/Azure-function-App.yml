@@ -1,0 +1,36 @@
+name: Deploy .NET Azure Function App
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0'  # Replace with your required .NET version (e.g., 6.0 or 7.0)
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the project
+      run: dotnet build --configuration Release
+
+    - name: Publish the project
+      run: dotnet publish --configuration Release --output ./publish
+
+    - name: Deploy to Azure Function App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: GlobalIAPSFunctionsPreProd  # Replace with your Function App name
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+        package: ./publish
+
