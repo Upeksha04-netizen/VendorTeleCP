@@ -25,7 +25,7 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: Publish the project
-      run: dotnet publish --configuration Release --output ./vendortelecp/globaliapsfunctions/bin/release/net8.0/publish
+      run: dotnet publish --configuration Release --output ./globaliapsfunctions/bin/release/net8.0/publish
 
     - name: Deploy to Azure Function App
       uses: azure/webapps-deploy@v2
